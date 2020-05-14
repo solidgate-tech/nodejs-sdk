@@ -1,0 +1,22 @@
+{
+  "name": "@solidgate/node-sdk",
+  "version": "1.0.0",
+  "description": "Solidgate SDK",
+  "main": "index.js",
+  "repository": "https://bitbucket.org/solidgate/nodejs-sdk/src/master/",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "solidgate",
+    "sdk",
+    "payments"
+  ],
+  "author": "Vladyslav Pistun",
+  "license": "ISC",
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "node-fetch": "^2.6.0",
+    "sprintf-js": "^1.1.2"
+  }
+}

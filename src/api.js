@@ -1,6 +1,7 @@
 const fetch = require("node-fetch");
 const CryptoJS = require("crypto-js");
 const crypto = require("crypto");
+const MerchantData = require("./dto/merchantData");
 const sprintf = require('sprintf-js').sprintf
 
 module.exports = class Api {
@@ -87,6 +88,13 @@ module.exports = class Api {
             payloadEncrypted,
             this._generateSignature(payloadEncrypted)
         );
+    }
+
+    formMerchantData(attributes) {
+        let data = JSON.stringify(attributes);
+        let payloadEncrypted = this._encryptPayload(data);
+
+        return new MerchantData(payloadEncrypted, this.merchantId, this._generateSignature(payloadEncrypted));
     }
 
     _encryptPayload(attributes) {

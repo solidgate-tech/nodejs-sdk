@@ -53,3 +53,24 @@ let formUrl = api.formUrl({
   'form_design_name': 'form-design',
 });
 ```
+
+## Usage for new form url - return MerchantData class
+
+```js
+const solidGate = require('@solidgate/node-sdk');
+
+let api = new solidGate.Api("merchant", "private_key");
+
+let merchantData = api.formMerchantData({
+  'amount': 10000,
+  'currency': 'USD',
+  'customer_email': 'test@testmail.com',
+  'order_description': 'Premium package',
+  'order_id': "213",
+  'platform': 'WEB',
+  'geo_country': 'ESP',
+  'form_design_name': 'form-design',
+});
+
+const dataToFront = merchantData.toObject()
+```

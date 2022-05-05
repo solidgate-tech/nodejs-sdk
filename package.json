@@ -1,6 +1,7 @@
 {
   "name": "@solidgate/node-sdk",
   "version": "1.1.2",
+  "license": "Apache-2.0",
   "description": "Solidgate SDK",
   "main": "index.js",
   "repository": "https://bitbucket.org/solidgate/nodejs-sdk/src/master/",

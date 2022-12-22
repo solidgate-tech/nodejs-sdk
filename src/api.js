@@ -38,10 +38,6 @@ module.exports = class Api {
         return this._baseRequest('status', attributes)
     }
 
-    initPayment(attributes) {
-        return this._baseRequest('init-payment', attributes)
-    }
-
     settle(attributes) {
         return this._baseRequest('settle', attributes)
     }

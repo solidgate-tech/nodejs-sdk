@@ -1,8 +1,10 @@
 const fetch = require("node-fetch");
 const CryptoJS = require("crypto-js");
 const crypto = require("crypto");
-const MerchantData = require("./dto/merchantData");
 const sprintf = require('sprintf-js').sprintf
+
+const FormInitDTO = require("./dto/FormInitDTO");
+const FormUpdateDTO = require("./dto/FormUpdateDTO");
 
 module.exports = class Api {
     static IV_LENGTH = 16;
@@ -63,6 +65,8 @@ module.exports = class Api {
     }
 
     formUrl(attributes) {
+        console.warn('Deprecation warning: Please, use actual form version with formMerchantData method instead')
+
         let data = JSON.stringify(attributes);
         let payloadEncrypted = this._encryptPayload(data);
 
@@ -90,7 +94,18 @@ module.exports = class Api {
         let data = JSON.stringify(attributes);
         let payloadEncrypted = this._encryptPayload(data);
 
-        return new MerchantData(payloadEncrypted, this.merchantId, this._generateSignature(payloadEncrypted));
+        return new FormInitDTO(payloadEncrypted, this.merchantId, this._generateSignature(payloadEncrypted));
+    }
+
+    formUpdate(attributes) {
+        if (attributes['order_id']) {
+            console.warn('Deprecation warning: order_id update is forbidden')
+        }
+
+        let data = JSON.stringify(attributes);
+        let payloadEncrypted = this._encryptPayload(data);
+
+        return new FormUpdateDTO(payloadEncrypted, this._generateSignature(payloadEncrypted));
     }
 
     _encryptPayload(attributes) {

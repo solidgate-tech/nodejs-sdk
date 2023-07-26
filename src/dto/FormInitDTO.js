@@ -1,4 +1,4 @@
-module.exports = class MerchantData {
+module.exports = class FormInitDTO {
     constructor(paymentIntent, merchant, signature) {
         this.paymentIntent = paymentIntent
         this.signature = signature

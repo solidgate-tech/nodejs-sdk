@@ -35,26 +35,7 @@ promise.then((res) => {
 
 ```
 
-## Usage for forms url - return string
-
-```js
-const solidGate = require('@solidgate/node-sdk');
-
-let api = new solidGate.Api("merchant", "private_key", "base_solidgate_url");
-
-let formUrl = api.formUrl({
-  'amount': 10000,
-  'currency': 'USD',
-  'customer_email': 'test@testmail.com',
-  'order_description': 'Premium package',
-  'order_id': "213",
-  'platform': 'WEB',
-  'geo_country': 'ESP',
-  'form_design_name': 'form-design',
-});
-```
-
-## Usage for new form url - return MerchantData class
+## Usage for form url - return FormInitDTO class
 
 ```js
 const solidGate = require('@solidgate/node-sdk');
@@ -73,4 +54,58 @@ let merchantData = api.formMerchantData({
 });
 
 const dataToFront = merchantData.toObject()
+```
+
+
+## Usage for form initialization - return FormInitDTO class
+
+```js
+const solidGate = require('@solidgate/node-sdk');
+
+let api = new solidGate.Api("merchant", "private_key");
+
+let dto = api.formMerchantData({
+  'amount': 10000,
+  'currency': 'USD',
+  'customer_email': 'test@testmail.com',
+  'order_description': 'Premium package',
+  'order_id': "213",
+  'platform': 'WEB',
+  'geo_country': 'ESP',
+});
+
+const dataToFront = dto.toObject()
+```
+
+This values should be applied on frontend in the following way
+
+```js
+const form = PaymentFormSdk.init({
+    merchantData: dataToFront // from backend
+})
+```
+
+## Usage for form update - return FormUpdateDTO class
+
+```js
+const solidGate = require('@solidgate/node-sdk');
+
+let api = new solidGate.Api("merchant", "private_key");
+
+let dto = api.formUpdate({
+  'amount': 10000,
+  'currency': 'USD',
+  'customer_email': 'test@testmail.com',
+  'order_description': 'Premium package',
+  'platform': 'WEB',
+  'geo_country': 'ESP',
+});
+
+const dataToFront = dto.toObject()
+```
+
+This values should be applied on frontend in the following way
+
+```js
+const form.update(dataToFront)
 ```

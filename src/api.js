@@ -11,12 +11,11 @@ module.exports = class Api {
     static KEY_LENGTH = 32;
     static BASE_SOLID_GATE_API_URI = 'https://pay.solidgate.com/api/v1/';
 
-    static FORM_PATTERN_URL = 'form?merchant=%s&form_data=%s&signature=%s';
     static RESIGN_FORM_PATTERN_URL = 'form/resign?merchant=%s&form_data=%s&signature=%s';
 
-    constructor(merchantId, privateKey, baseSolidGateUri = Api.BASE_SOLID_GATE_API_URI) {
-        this.merchantId = merchantId;
-        this.privateKey = privateKey;
+    constructor(publicKey, secretKey, baseSolidGateUri = Api.BASE_SOLID_GATE_API_URI) {
+        this.publicKey = publicKey;
+        this.secretKey = secretKey;
         this.baseSolidGateUri = baseSolidGateUri;
     }
 
@@ -64,27 +63,13 @@ module.exports = class Api {
         return this._baseRequest('google-pay', attributes)
     }
 
-    formUrl(attributes) {
-        console.warn('Deprecation warning: Please, use actual form version with formMerchantData method instead')
-
-        let data = JSON.stringify(attributes);
-        let payloadEncrypted = this._encryptPayload(data);
-
-        return this.baseSolidGateUri + sprintf(
-            Api.FORM_PATTERN_URL,
-            this.merchantId,
-            payloadEncrypted,
-            this._generateSignature(payloadEncrypted)
-        );
-    }
-
     resignFormUrl(attributes) {
         let data = JSON.stringify(attributes);
         let payloadEncrypted = this._encryptPayload(data);
 
         return this.baseSolidGateUri + sprintf(
             Api.RESIGN_FORM_PATTERN_URL,
-            this.merchantId,
+            this.publicKey,
             payloadEncrypted,
             this._generateSignature(payloadEncrypted)
         );
@@ -94,7 +79,7 @@ module.exports = class Api {
         let data = JSON.stringify(attributes);
         let payloadEncrypted = this._encryptPayload(data);
 
-        return new FormInitDTO(payloadEncrypted, this.merchantId, this._generateSignature(payloadEncrypted));
+        return new FormInitDTO(payloadEncrypted, this.publicKey, this._generateSignature(payloadEncrypted));
     }
 
     formUpdate(attributes) {
@@ -109,7 +94,7 @@ module.exports = class Api {
     }
 
     _encryptPayload(attributes) {
-        let key = this.privateKey
+        let key = this.secretKey
 
         let iv = crypto.randomBytes(Api.IV_LENGTH);
         let cipher = crypto.createCipheriv('aes-256-cbc', key.substr(0, Api.KEY_LENGTH), iv);
@@ -126,7 +111,7 @@ module.exports = class Api {
             fetch(this.baseSolidGateUri + path, {
                 method: 'POST',
                 headers: {
-                    'Merchant': this.merchantId,
+                    'Merchant': this.publicKey,
                     'Signature': this._generateSignature(data),
                     'Content-Type': 'application/json'
                 },
@@ -138,7 +123,7 @@ module.exports = class Api {
     }
 
     _generateSignature(attributes) {
-        var hashed = CryptoJS.HmacSHA512(this.merchantId + attributes + this.merchantId, this.privateKey);
+        var hashed = CryptoJS.HmacSHA512(this.publicKey + attributes + this.publicKey, this.secretKey);
 
         return Buffer.from(hashed.toString()).toString('base64')
     }

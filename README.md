@@ -128,13 +128,11 @@ let dto = api.formResign({
   'recurring_token': 'some_token',
 });
 
-const dataToFront = dto.toObject()
+const dataToFront = dto.toObject();
 ```
 
 This values should be applied on frontend in the following way
 
 ```js
-const form = PaymentFormSdk.resign({
-    request: dataToFront // from backend
-})
+const form = PaymentFormSdk.resign(dataToFront);
 ```

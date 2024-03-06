@@ -5,6 +5,7 @@ const sprintf = require('sprintf-js').sprintf
 
 const FormInitDTO = require("./dto/FormInitDTO");
 const FormUpdateDTO = require("./dto/FormUpdateDTO");
+const FormResignDTO = require("./dto/FormResignDTO");
 
 module.exports = class Api {
     static IV_LENGTH = 16;
@@ -93,6 +94,13 @@ module.exports = class Api {
         return new FormUpdateDTO(payloadEncrypted, this._generateSignature(payloadEncrypted));
     }
 
+    formResign(attributes) {
+        let data = JSON.stringify(attributes);
+        let payloadEncrypted = this._encryptPayload(data);
+
+        return new FormResignDTO(payloadEncrypted, this.publicKey, this._generateSignature(payloadEncrypted));
+    }
+
     _encryptPayload(attributes) {
         let key = this.secretKey
 
@@ -101,7 +109,7 @@ module.exports = class Api {
         let encrypted = cipher.update(attributes);
 
         encrypted = Buffer.concat([iv, encrypted, cipher.final()]);
-        return  encrypted.toString('base64').replace(/\+/g, '-').replace(/\//g, '_')
+        return encrypted.toString('base64').replace(/\+/g, '-').replace(/\//g, '_')
     }
 
     _baseRequest(path, attributes) {

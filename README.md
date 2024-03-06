@@ -109,3 +109,32 @@ This values should be applied on frontend in the following way
 ```js
 const form.update(dataToFront)
 ```
+
+## Usage for form resign initialization - return FormResignDTO class
+
+```js
+const solidGate = require('@solidgate/node-sdk');
+
+let api = new solidGate.Api("merchant", "private_key");
+
+let dto = api.formResign({
+  'amount': 10000,
+  'currency': 'USD',
+  'customer_email': 'test@testmail.com',
+  'order_description': 'Premium package',
+  'order_id': "213",
+  'platform': 'WEB',
+  'geo_country': 'ESP',
+  'recurring_token': 'some_token',
+});
+
+const dataToFront = dto.toObject()
+```
+
+This values should be applied on frontend in the following way
+
+```js
+const form = PaymentFormSdk.resign({
+    request: dataToFront // from backend
+})
+```

@@ -12,8 +12,6 @@ module.exports = class Api {
     static KEY_LENGTH = 32;
     static BASE_SOLID_GATE_API_URI = 'https://pay.solidgate.com/api/v1/';
 
-    static RESIGN_FORM_PATTERN_URL = 'form/resign?merchant=%s&form_data=%s&signature=%s';
-
     constructor(publicKey, secretKey, baseSolidGateUri = Api.BASE_SOLID_GATE_API_URI) {
         this.publicKey = publicKey;
         this.secretKey = secretKey;
@@ -62,18 +60,6 @@ module.exports = class Api {
 
     googlePay(attributes) {
         return this._baseRequest('google-pay', attributes)
-    }
-
-    resignFormUrl(attributes) {
-        let data = JSON.stringify(attributes);
-        let payloadEncrypted = this._encryptPayload(data);
-
-        return this.baseSolidGateUri + sprintf(
-            Api.RESIGN_FORM_PATTERN_URL,
-            this.publicKey,
-            payloadEncrypted,
-            this._generateSignature(payloadEncrypted)
-        );
     }
 
     formMerchantData(attributes) {

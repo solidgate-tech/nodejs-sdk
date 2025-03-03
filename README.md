@@ -40,6 +40,8 @@ Check our
 * **npm**: Node.js package manager
 * **Solidgate account**: Merchant ID and secret key (request via <a href="mailto:sales@solidgate.com">sales@solidgate.com</a>)
 
+<br>
+
 ## Installation
 
 To install the Node.js SDK:
@@ -54,6 +56,8 @@ To install the Node.js SDK:
    const solidGate = require('@solidgate/node-sdk');
    ```
 4. Use test credentials to validate your integration before deploying to production.
+
+<br>
 
 ## Usage
 
@@ -191,6 +195,8 @@ These values should be applied on the front end in the following way.
 ```js
 const form = PaymentFormSdk.resign(dataToFront);
 ```
+
+<br>
 
 ## Errors
 

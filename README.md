@@ -205,3 +205,8 @@ Handle <a href="https://docs.solidgate.com/payments/payments-insights/error-code
 ```js
 api.charge({...}).catch((error) => console.error(error));
 ```
+
+---
+
+Looking for help? <a href="https://support.solidgate.com/support/tickets/new" target="_blank">Contact us</a> <br>
+Want to contribute? <a href="https://github.com/solidgate-tech/nodejs-sdk/pulls" target="_blank">Submit a pull request</a>

@@ -2,6 +2,7 @@ const fetch = require("node-fetch");
 const CryptoJS = require("crypto-js");
 const crypto = require("crypto");
 const sprintf = require('sprintf-js').sprintf
+const {version: SDK_VERSION} = require("../package.json");
 
 const FormInitDTO = require("./dto/FormInitDTO");
 const FormUpdateDTO = require("./dto/FormUpdateDTO");
@@ -11,6 +12,7 @@ module.exports = class Api {
     static IV_LENGTH = 16;
     static KEY_LENGTH = 32;
     static BASE_SOLID_GATE_API_URI = 'https://pay.solidgate.com/api/v1/';
+    static USER_AGENT = `Node-SDK-${SDK_VERSION}`;
 
     constructor(publicKey, secretKey, baseSolidGateUri = Api.BASE_SOLID_GATE_API_URI) {
         this.publicKey = publicKey;
@@ -107,7 +109,8 @@ module.exports = class Api {
                 headers: {
                     'Merchant': this.publicKey,
                     'Signature': this._generateSignature(data),
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'User-Agent': Api.USER_AGENT
                 },
                 body: data
             })

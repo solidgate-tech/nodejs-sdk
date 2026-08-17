@@ -1,3 +1,7 @@
+**1.5.0**
+
+Set `User-Agent` header
+
 **1.4.1**
 
 Up `README.md`
